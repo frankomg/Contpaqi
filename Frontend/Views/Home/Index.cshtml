@@ -1,0 +1,705 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    ul {
+        list-style: none;
+    }
+    .titulo {
+        border: 1px solid rgb(0 0 0);
+        background-color: gray;
+    }
+
+    .grid {
+        border: 1px solid rgb(0 0 0);
+    }
+
+    label{
+        width:100%;
+    }
+
+    req {
+        color: red;
+    }
+
+    a:hover {
+        color: orange;
+    }
+</style>
+
+<div class="text-center">
+    <h1 class="display-4">EMPLEADOS</h1>
+</div>
+
+<div class="text-center">
+    <button id="btnAlta" onclick="nuevo();" style="width:auto; text-align:center">
+        NUEVO EMPLEADO
+    </button>
+    <button id="btnAlta" onclick="buscar();" style="width:auto; text-align:center">
+        BUSCAR EMPLEADO
+    </button>
+    <button id="btnAlta" onclick="refrescar();" style="width:auto; text-align:center">
+        ACTUALIZAR
+    </button>
+</div>
+<br />
+<div class="container">
+    <div id="seccionBusqueda" style="display:none">
+        <h6>CRITERIOS DE BUSQUEDA</h6>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-4">
+                        Nombre: <input type="text" id="txtnombre_bu" >
+                    </div>
+                    <div class="col-md-3">
+                        R.F.C.: <input type="text" id="txtrfc_bu" />
+                    </div>
+                    <div class="col-md-4">
+                        Estatus: <select id="txtestatus_bu">
+                                     <option value="A">Labora actualmente</option>
+                                     <option value="B">Empleado dado de baja</option>
+                                 </select>
+                    </div>
+                    <div class="col-md-1">
+                        <button id="btnBuscar" onclick="buscarEmpleados();" style="width:auto; text-align:center">BUSCAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="container">
+    <div id="seccionResultados" >
+        <div class="text-center">
+            <ul id="contentSearch" style="width: 100%;  overflow: auto; overflow-x: hidden;"></ul>
+        </div>
+    </div>
+</div>
+<br />
+<div class="container">
+    <div id="seccionNuevo" style="display:none">
+        <h6>NUEVO EMPLEADO</h6>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-3">
+                        <label for="txtnombr_nu"><req>*</req>Nombre</label>
+                        <input type="text" id="txtnombre_nu">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtapellido_paterno_nu"><req>*</req>Apellido Paterno</label>
+                        <input type="text" id="txtapellido_paterno_nu">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtapellido_materno_nu"><req>*</req>Apellido Materno</label>
+                        <input type="text" id="txtapellido_materno_nu">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtedad_nu"><req>*</req>Edad</label>
+                        <input type="number" id="txtedad_nu">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-12">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-3">
+                        <label for="txtfecha_nacimiento_nu"><req>*</req>Fecha Nacimiento</label>
+                        <input type="date" id="txtfecha_nacimiento_nu">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtgenero_nu"><req>*</req>Genero</label>
+                        <select id="txtgenero_nu">
+                            <option>H</option>
+                            <option>M</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtestado_civil_nu"><req>*</req>Estado Civil</label>
+                        <input type="text" id="txtestado_civil_nu">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtrfc_nu"><req>*</req>R.F.C.</label>
+                        <input type="text" id="txtrfc_nu">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-12">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-3">
+                        <label for="txtdireccion_nu"><req>*</req>Direccion</label>
+                        <input type="text" id="txtdireccion_nu">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtemail_nu"><req>*</req>Email</label>
+                        <input type="text" id="txtemail_nu">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txttelefono_nu"><req>*</req>Telefono</label>
+                        <input type="text" id="txttelefono_nu">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtpuesto_nu"><req>*</req>Puesto</label>
+                        <input type="text" id="txtpuesto_nu">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-12">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-3">
+                        <label for="txtfecha_alta_nu"><req>*</req>Fecha Alta</label>
+                        <input type="date" id="txtfecha_alta_nu" disabled="disabled">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtfecha_baja_nu">Fecha Baja</label>
+                        <input type="date" id="txtfecha_baja_nu">
+                    </div>
+                    <div class="col-md-6 text-center" style="padding-top:30px;">
+                        <req>*  CAMPOS OBLIGATORIOS</req>                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-12" style="padding-top:15px">
+                <div class="text-center">
+                    <button id="btnGuardar_nu" onclick="agregar();" style="width:auto; text-align:center">
+                        AGREGAR
+                    </button>
+                    <button id="btnCancelar_nu" onclick="cancelar(0);" style="width:auto; text-align:center">
+                        CANCELAR
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div id="seccionEditar" style="display:none">
+        <h6>EDITAR EMPLEADO</h6>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-3">
+                        <label for="txtnombr_ed">Nombre</label>
+                        <input type="text" id="txtnombre_ed" disabled="disabled">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtapellido_paterno_ed">Apellido Paterno</label>
+                        <input type="text" id="txtapellido_paterno_ed" disabled="disabled">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtapellido_materno_ed">Apellido Materno</label>
+                        <input type="text" id="txtapellido_materno_ed" disabled="disabled">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtedad_ed">Edad</label>
+                        <input type="number" id="txtedad_ed" disabled="disabled">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-12">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-3">
+                        <label for="txtfecha_nacimiento_ed">Fecha Nacimiento</label>
+                        <input type="date" id="txtfecha_nacimiento_ed" disabled="disabled">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtgenero_ed">Genero</label>
+                        <select id="txtgenero_ed" disabled="disabled">
+                            <option>H</option>
+                            <option>M</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtestado_civil_ed"><req>*</req>Estado Civil</label>
+                        <input type="text" id="txtestado_civil_ed">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtrfc_ed">R.F.C.</label>
+                        <input type="text" id="txtrfc_ed" disabled="disabled">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-12">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-3">
+                        <label for="txtdireccion_ed"><req>*</req>Direccion</label>
+                        <input type="text" id="txtdireccion_ed">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtemail_ed"><req>*</req>Email</label>
+                        <input type="text" id="txtemail_ed">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txttelefono_ed"><req>*</req>Telefono</label>
+                        <input type="text" id="txttelefono_ed">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtpuesto_ed"><req>*</req>Puesto</label>
+                        <input type="text" id="txtpuesto_ed">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-12">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-3">
+                        <label for="txtfecha_alta_ed">Fecha Alta</label>
+                        <input type="date" id="txtfecha_alta_ed" disabled="disabled">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtfecha_baja_ed">Fecha Baja</label>
+                        <input type="date" id="txtfecha_baja_ed">
+                    </div>  
+                    <div class="col-md-6 text-center" style="padding-top:30px;">
+                        <req>*  CAMPOS OBLIGATORIOS</req>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-12" style="padding-top:15px">
+                <div class="text-center">
+                    <button id="btnguardar_ed" onclick="actualizar();" style="width:auto; text-align:center">
+                        ACTUALIZAR
+                    </button>
+                    <button id="btncancelar_ed" onclick="cancelar(1);" style="width:auto; text-align:center">
+                        CANCELAR
+                    </button>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" id="txtid_ed" disabled="disabled" style="visibility:collapse">                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var URLBackEnd = 'https://localhost:44367';
+    var bandera = 0;
+
+    getEmpleados();
+
+    function nuevo() {
+
+        document.getElementById('txtnombre_nu').value = '';
+        document.getElementById('txtapellido_paterno_nu').value = '';
+        document.getElementById('txtapellido_materno_nu').value = '';
+        document.getElementById('txtedad_nu').value = '';
+        document.getElementById('txtfecha_nacimiento_nu').value = '';
+        document.getElementById('txtgenero_nu').value = '';
+        document.getElementById('txtestado_civil_nu').value = '';
+        document.getElementById('txtrfc_nu').value = '';
+        document.getElementById('txtdireccion_nu').value = '';
+        document.getElementById('txtemail_nu').value = '';
+        document.getElementById('txttelefono_nu').value = '';
+        document.getElementById('txtpuesto_nu').value = '';
+        document.getElementById('txtfecha_baja_nu').value = '';
+        document.getElementById('txtfecha_alta_nu').value = formato_fecha(new Date(), 'yyyy-MM-dd');
+
+        ocultar();
+        mostrar('seccionNuevo');
+
+    }
+
+    function buscar() {
+
+        document.getElementById('txtnombre_bu').value = '';
+        document.getElementById('txtrfc_bu').value = '';
+        document.getElementById('txtestatus_bu').value = '';
+
+        ocultar();
+        mostrar('seccionBusqueda');
+
+    }
+
+    function refrescar() {
+
+        ocultar();
+        getEmpleados();;
+        mostrar('seccionResultados')
+
+    }
+
+    function getEmpleados() {
+
+        var myHeaders = new Headers();
+        myHeaders.append("Access-Control-Allow-Origin", "*");
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        fetch(URLBackEnd + "/Empleado/Get", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+
+                var dataProviders = traeEncabezados();
+
+                $.each(result, function (index, data) {
+                    if (result) {
+                        if (data.id != '' || data.id == undefined) {
+                            dataProviders = dataProviders +
+                                '<div class="col-md-12">' +
+                                '    <div class="row justify-content-md-center">' +
+                                '        <div class="col-md-2 grid">' + data.nombre_completo + '</div>' +
+                                '        <div class="col-md-2 grid">' + data.email + '</div>' +
+                                '        <div class="col-md-2 grid">' + data.puesto + '</div>' +
+                                '        <div class="col-md-2 grid">' + data.rfc + '</div>' +
+                                '        <div class="col-md-2 grid">' + data.fecha_alta.substring(0, 10) + '</div>' +
+                                '        <div class="col-md-2"><a href="#" onclick="editar(' + data.id + ')">Editar</a> / <a href="#" onclick="eliminar(' + data.id + ')">Eliminar</a></div>' +
+                                '    </div>' +
+                                '</div>'
+
+                            document.getElementById("contentSearch").scrollIntoView();
+
+                        } else {
+                            $("#contentSearch").html('<span>No hay resultados</span>');
+
+                        }
+
+                    } else {
+                        $("#contentSearch").html('<span>No hay resultados</span>');
+                    }
+
+                });
+
+                $("#contentSearch").html(dataProviders + '</li></ul>');
+
+            })
+            .catch(error => console.log('error', error));
+
+        mostrar('seccionResultados');
+    }
+
+    function buscarEmpleados() {
+
+        var myHeaders = new Headers();
+        myHeaders.append("Access-Control-Allow-Origin", "*");
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        let nombre = document.getElementById('txtnombre_bu').value;
+        let rfc = document.getElementById('txtrfc_bu').value;
+        let estatus = document.getElementById('txtestatus_bu').value;
+        let fecha_actual = formato_fecha(new Date(), 'yyyy-MM-dd');
+
+        fetch(URLBackEnd + "/Empleado/Buscar?nombre=" + nombre + "&rfc=" + rfc + "&estatus=" + estatus + "&fecha_actual=" + fecha_actual, requestOptions)
+            .then(response => response.json())
+            .then(result => {
+
+                var dataProviders = traeEncabezados();
+
+                console.log(result)
+
+                $.each(result, function (index, data) {
+                    if (result) {
+                        if (data.id != '' || data.id == undefined) {
+                            dataProviders = dataProviders +
+                                '<div class="col-md-12">' +
+                                '    <div class="row justify-content-md-center">' +
+                                '        <div class="col-md-2 grid">' + data.nombre_completo + '</div>' +
+                                '        <div class="col-md-2 grid">' + data.email + '</div>' +
+                                '        <div class="col-md-2 grid">' + data.puesto + '</div>' +
+                                '        <div class="col-md-2 grid">' + data.rfc + '</div>' +
+                                '        <div class="col-md-2 grid">' + data.fecha_alta.substring(0, 10) + '</div>' +
+                                '        <div class="col-md-2"><a href="#" onclick="editar(' + data.id + ')">Editar</a> / <a href="#" onclick="eliminar(' + data.id + ')">Eliminar</a></div>' +
+                                '    </div>' +
+                                '</div>'
+
+                            document.getElementById("contentSearch").scrollIntoView();
+
+                        } else {
+                            $("#contentSearch").html('<span>No hay resultados</span>');
+
+
+                        }
+
+                    } else {
+                        $("#contentSearch").html('<span>No hay resultados</span>');
+                    }
+
+                });
+
+                $("#contentSearch").html(dataProviders);
+
+            })
+            .catch(error => console.log('error', error));
+
+        mostrar('seccionResultados');
+
+    }
+
+    function editar(id) {
+
+        var seccionBusqueda = document.getElementById('seccionBusqueda');
+
+        if (seccionBusqueda.style.display == "block") { bandera = 1; }
+        else { bandera = 0; }
+
+        ocultar();
+        buscarEmpleadoxId(id);
+        mostrar('seccionEditar');
+
+    }
+
+    function eliminar(id) {
+
+        if (confirm("¿Deseas eliminarlo?")) {
+            var myHeaders = new Headers();
+            myHeaders.append("Access-Control-Allow-Origin", "*");
+
+            var requestOptions = {
+                method: 'DELETE',
+                headers: myHeaders,
+                redirect: 'follow'
+            };
+
+            let fecha_baja = formato_fecha(new Date(), 'yyyy-MM-dd');
+
+            fetch(URLBackEnd + "/Empleado/Delete?id=" + id + "&fecha_baja=" + fecha_baja, requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    alert('Registro dado de Baja');
+                })
+                .catch(error => console.log('error', error));
+
+        }
+    }
+
+    function buscarEmpleadoxId(id) {
+        var myHeaders = new Headers();
+        myHeaders.append("Access-Control-Allow-Origin", "*");
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        fetch(URLBackEnd + "/Empleado/GetxId?id=" + id, requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                document.getElementById('txtid_ed').value = result.id;
+                document.getElementById('txtnombre_ed').value = result.nombre;
+                document.getElementById('txtapellido_paterno_ed').value = result.apellido_paterno;
+                document.getElementById('txtapellido_materno_ed').value = result.apellido_materno;
+                document.getElementById('txtedad_ed').value = result.edad;
+                document.getElementById('txtfecha_nacimiento_ed').value = convertDateFormat(result.fecha_nacimiento);
+                document.getElementById('txtgenero_ed').value = result.genero;
+                document.getElementById('txtestado_civil_ed').value = result.estado_civil;
+                document.getElementById('txtrfc_ed').value = result.rfc;
+                document.getElementById('txtdireccion_ed').value = result.direccion;
+                document.getElementById('txtemail_ed').value = result.email;
+                document.getElementById('txttelefono_ed').value = result.telefono;
+                document.getElementById('txtpuesto_ed').value = result.puesto;
+                document.getElementById('txtfecha_alta_ed').value = convertDateFormat(result.fecha_alta);
+                document.getElementById('txtfecha_baja_ed').value = convertDateFormat(result.fecha_baja);
+            })
+            .catch(error => console.log('error', error));
+    }
+
+    function agregar() {
+
+        let nombre = document.getElementById('txtnombre_nu').value;
+        let apellido_paterno = document.getElementById('txtapellido_paterno_nu').value;
+        let apellido_materno = document.getElementById('txtapellido_materno_nu').value;
+        let edad = document.getElementById('txtedad_nu').value;
+        let fecha_nacimiento = document.getElementById('txtfecha_nacimiento_nu').value;
+        let genero = document.getElementById('txtgenero_nu').value;
+        let estado_civil = document.getElementById('txtestado_civil_nu').value;
+        let rfc = document.getElementById('txtrfc_nu').value;
+        let direccion = document.getElementById('txtdireccion_nu').value;
+        let email = document.getElementById('txtemail_nu').value;
+        let telefono = document.getElementById('txttelefono_nu').value;
+        let puesto = document.getElementById('txtpuesto_nu').value;
+        let fecha_alta = document.getElementById('txtfecha_alta_nu').value;
+        let fecha_baja = document.getElementById('txtfecha_baja_nu').value;
+
+        //Valida obligatorios
+        if (nombre == '' || apellido_paterno == '' || apellido_materno == '' || edad == '' || fecha_nacimiento == '' || genero == '' || estado_civil == '' || rfc == '' || direccion == '' || email == '' || telefono == '' || puesto == '' || fecha_alta == '') {
+            alert('Favor de completar los campos marcados como obligatorios');
+            return;
+        }
+
+        var myHeaders = new Headers();
+        myHeaders.append("Access-Control-Allow-Origin", "*");
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            "nombre": nombre,
+            "apellido_paterno": apellido_paterno,
+            "apellido_materno": apellido_materno,
+            "edad": edad,
+            "fecha_nacimiento": fecha_nacimiento,
+            "genero": genero,
+            "estado_civil": estado_civil,
+            "rfc": rfc,
+            "direccion": direccion,
+            "email": email,
+            "telefono": telefono,
+            "puesto": puesto,
+            "fecha_alta": fecha_alta,
+            "fecha_baja": fecha_baja
+        });
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch(URLBackEnd + "/Empleado/Insert", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                alert('Registro Insertado');
+                ocultar();
+                getEmpleados();
+            })
+            .catch(error => console.log('error', error));
+    }
+
+    function actualizar() {
+
+        let id = document.getElementById('txtid_ed').value;
+        let estado_civil = document.getElementById('txtestado_civil_ed').value;
+        let direccion = document.getElementById('txtdireccion_ed').value;
+        let email = document.getElementById('txtemail_ed').value;
+        let telefono = document.getElementById('txttelefono_ed').value;
+        let puesto = document.getElementById('txtpuesto_ed').value;
+        let fecha_baja = document.getElementById('txtfecha_baja_ed').value;
+
+        //Valida obligatorios
+        if (estado_civil == '' || direccion == '' || email == '' || telefono == '' || puesto == '') {
+            alert('Favor de completar los campos marcados como obligatorios');
+            return;
+        }
+
+        var myHeaders = new Headers();
+        myHeaders.append("Access-Control-Allow-Origin", "*");
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            "id": id,
+            "estado_civil": estado_civil,
+            "direccion": direccion,
+            "email": email,
+            "telefono": telefono,
+            "puesto": puesto,
+            "fecha_baja": fecha_baja
+        });
+
+        var requestOptions = {
+            method: 'PATCH',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch(URLBackEnd + "/Empleado/Update", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                alert('Registro Actualizado');
+                ocultarSeccion('seccionEditar');
+
+                if (bandera == 1) {
+                    mostrar('seccionBusqueda');
+                    buscarEmpleados();
+                }
+                else { getEmpleados(); }
+            })
+            .catch(error => console.log('error', error));
+    }
+
+    function cancelar(origen) {
+        //origen = 0 :Nuevo
+        //origen = 1 :Editar      
+
+        ocultar();
+
+        if (origen == 0) {
+            getEmpleados();
+        }
+        else if (origen == 1) {
+
+            if (bandera == 1)
+                mostrar('seccionBusqueda');
+
+            mostrar('seccionResultados');
+        }
+    }
+
+    function ocultar() {
+
+        var a = document.getElementById("seccionBusqueda");
+        var b = document.getElementById("seccionResultados");
+        var c = document.getElementById("seccionNuevo");
+        var d = document.getElementById("seccionEditar");
+
+        a.style.display = "none";
+        b.style.display = "none";
+        c.style.display = "none";
+        d.style.display = "none";
+
+    }
+
+    function ocultarSeccion(idseccion) {
+
+        var seccion = document.getElementById(idseccion);
+        seccion.style.display = "none";
+
+    }
+
+    function mostrar(idseccion) {
+
+        var seccion = document.getElementById(idseccion);
+        seccion.style.display = "block";
+
+    }
+
+    function traeEncabezados() {
+
+        return '<ul style="width: 100%;  overflow: auto; overflow-x: hidden;"><li>' +
+            '<div class="col-md-12">' +
+            '<div class="row justify-content-md-center">' +
+            '<div class="col-md-2 titulo">NOMBRE</div>' +
+            '<div class="col-md-2 titulo">EMAIL</div>' +
+            '<div class="col-md-2 titulo">PUESTO</div>' +
+            '<div class="col-md-2 titulo">R.F.C.</div>' +
+            '<div class="col-md-2 titulo">FECHA DE ALTA</div>' +
+            '<div class="col-md-2">ACCIONES</div>' +
+            '</div>' +
+            '</div>';
+    }
+
+    function convertDateFormat(string) {
+        var info = string.substring(0, 10).split('/').reverse().join('-');
+        return info;
+    }
+
+    formato_fecha = function date2str(x, y) {
+        var z = {
+            M: x.getMonth() + 1,
+            d: x.getDate(),
+            h: x.getHours(),
+            m: x.getMinutes(),
+            s: x.getSeconds()
+        };
+        y = y.replace(/(M+|d+|h+|m+|s+)/g, function (v) {
+            return ((v.length > 1 ? "0" : "") + eval('z.' + v.slice(-1))).slice(-2)
+        });
+
+        return y.replace(/(y+)/g, function (v) {
+            return x.getFullYear().toString().slice(-v.length)
+        });
+    }
+
+</script>
