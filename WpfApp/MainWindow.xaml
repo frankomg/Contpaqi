@@ -1,0 +1,36 @@
+﻿<Window x:Class="WpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="246" Width="673">
+    <Grid Margin="0,0,0,0">
+        <TextBox HorizontalAlignment="Left" Margin="84,56,0,0" Text="" Name="txtnombre" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Button Click="Button_Click"  Content="Agregar Empleado" HorizontalAlignment="Left" Margin="18,167,0,0" VerticalAlignment="Top" Width="186"/>
+        <Label Content="Nombre: " HorizontalAlignment="Left" Margin="18,52,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="84,88,0,0" Text="" Name="txtpuesto" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Puesto: " HorizontalAlignment="Left" Margin="18,84,0,0" VerticalAlignment="Top"/>
+        <TextBox KeyDown="TextBox_KeyDown" HorizontalAlignment="Left" Margin="84,119,0,0" Text="" Name="txtsalario" TextWrapping="Wrap" VerticalAlignment="Top"  Width="120" />
+        <Label Content="Salario: " HorizontalAlignment="Left" Margin="18,115,0,0" VerticalAlignment="Top"/>
+        <Label Content="EMPLEADOS" HorizontalAlignment="Left" Margin="18,19,0,0" VerticalAlignment="Top"/>
+
+        <DataGrid Name="grdempleados" AutoGenerateColumns="False" IsEnabled="False" Height="194" VerticalAlignment="Center" HorizontalAlignment="Left" Width="421" Margin="230,0,0,0">
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Header="Nombre" Width="150" Binding="{Binding nombre}" />
+
+                <DataGridTextColumn Header="Puesto"  Width="100" Binding="{Binding puesto}" />
+
+                <DataGridTextColumn Header="Salario MXN"  Width="80" Binding="{Binding salario}" />
+
+                <DataGridTextColumn Header="Salario USD"  Width="80" Binding="{Binding salarioUSD}" />
+
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+
+
+</Window>

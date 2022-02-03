@@ -1,0 +1,24 @@
+﻿html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+div.tabla {
+    clear: none;
+    overflow: hidden;
+}
+
+div.fila {
+    clear: both;
+}
+
+div.col {
+    border-style: none;
+    border-color: inherit;
+    border-width: medium;
+    float: left;
+}
